@@ -35,7 +35,7 @@ def insertOrUpdate(Id, Name, roll) :                                            
 name = input("Enter student's name : ")
 roll = input("Enter student's Roll Number : ")
 Id = roll[-2:]
-#insertOrUpdate(Id, name, roll)                                                  # calling the sqlite3 database
+insertOrUpdate(Id, name, roll)                                                  # calling the sqlite3 database
 
 
 folderName = "user" + Id                                                        # creating the person or user folder

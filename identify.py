@@ -1,5 +1,5 @@
 import cognitive_face as CF
-from global_variables import personGroupId
+import global_variables as global_var
 import os, urllib
 import sqlite3
 from openpyxl import Workbook, load_workbook
@@ -24,15 +24,15 @@ def getDateColumn():
 		if sheet['%s%s'% (col,'1')].value == currentDate:
 			return col
 
-Key = '63fdb1a3135b4d71bf3b9866173e8ea7'
+Key = global_var.key
 
 CF.Key.set(Key)
 
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
+BASE_URL = global_var.BASE_URL  # Replace with your regional Base URL
 CF.BaseUrl.set(BASE_URL)
 
 connect = sqlite3.connect("Face-DataBase")
-c = connect.cursor()
+#c = connect.cursor()
 
 attend = [0 for i in range(60)]	
 
@@ -44,6 +44,7 @@ for filename in os.listdir(directory):
 		imgurl = imgurl[3:]
 #		print("imgurl = {}".format(imgurl))
 		res = CF.face.detect(imgurl)
+		print("Res = {}".format(res))
 
 		if len(res) < 1:
 			print("No face detected.")
@@ -52,23 +53,30 @@ for filename in os.listdir(directory):
 		faceIds = []
 		for face in res:
 			faceIds.append(face['faceId'])
-		res = CF.face.identify(faceIds, personGroupId)
+		res = CF.face.identify(faceIds, global_var.personGroupId)
 		print(filename)
-		print(res)
+		print("res = {}".format(res))
+
 		for face  in res:
 			if not face['candidates']:
 				print("Unknown")
 			else:
 				personId = face['candidates'][0]['personId']
-				c.execute("SELECT * FROM Students WHERE personID = ?", (personId,))
-				row = c.fetchone()
-				attend[int(row[0])] += 1
+				print("personid = {}".format(personId))
+				#cmd =  + personId
+				cur = connect.execute("SELECT * FROM Students WHERE personID = (?)", (personId,))
+				#print("cur = {}".format(cur))
+				for row in cur:
+					print("aya")
+					print("row = {}".format(row))
+					attend[int(row[0])] += 1
 				print("---------- " + row[1] + " recognized ----------")
 		time.sleep(6)
 		
 for row in range(2, len(list(sheet.columns)[0]) + 1):
 	rn = sheet.cell(row = row, column  =1).value
 	if rn is not None:
+		print("rn = {}".format(rn))
 		rn = rn[-2:]
 		if attend[int(rn)] != 0:
 			col = getDateColumn()

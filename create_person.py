@@ -1,20 +1,24 @@
 import sys
 import cognitive_face as CF
-from global_variables import personGroupId
+import global_variables as global_var
 import sqlite3
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
-
-Key = '63fdb1a3135b4d71bf3b9866173e8ea7'
+Key = global_var.key
 
 CF.Key.set(Key)
 
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
+BASE_URL = global_var.BASE_URL  # Replace with your regional Base URL
 CF.BaseUrl.set(BASE_URL)
 
+print("personGroupId = %s" %(global_var.personGroupId))
 
 if len(sys.argv) is not 1:
-    res = CF.person.create(personGroupId, str(sys.argv[1]))
+    res = CF.person.create(global_var.personGroupId, str(sys.argv[1]))
     #print("res = {}".format(res)) 
     print(res)
     extractId = str(sys.argv[1])[-2:]

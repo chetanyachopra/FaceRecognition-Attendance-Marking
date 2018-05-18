@@ -1,7 +1,7 @@
 import sys
 import os, time
 import cognitive_face as CF
-from global_variables import personGroupId
+import global_variables as global_var
 import urllib
 import sqlite3
 import requests
@@ -10,11 +10,11 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
-Key = '63fdb1a3135b4d71bf3b9866173e8ea7'
+Key = global_var.key
 
 CF.Key.set(Key)
 
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
+BASE_URL = global_var.BASE_URL  # Replace with your regional Base URL
 CF.BaseUrl.set(BASE_URL)
 
 def get_person_id():
@@ -43,7 +43,7 @@ if len(sys.argv) is not 1:
         	if len(res) != 1:
         		print("No face detected in image")
         	else:
-        		res = CF.person.add_face(imgurl, personGroupId, person_id)
+        		res = CF.person.add_face(imgurl, global_var.personGroupId, person_id)
         		print(res)	
         	time.sleep(6)
 else:
