@@ -4,6 +4,11 @@ import cognitive_face as CF
 from global_variables import personGroupId
 import urllib
 import sqlite3
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 
 Key = '63fdb1a3135b4d71bf3b9866173e8ea7'
 
