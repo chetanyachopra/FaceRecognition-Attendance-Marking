@@ -5,9 +5,9 @@ import dlib
 import os                                                                       # for creating folders
 
 cap = cv2.VideoCapture(0)
-cap.set(3, 1920)
-cap.set(4, 1080)
-cap.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 512)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 512)
+#cap.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))
 
 detector = dlib.get_frontal_face_detector()
 
@@ -43,21 +43,6 @@ folderPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "dataset/
 if not os.path.exists(folderPath):
     os.makedirs(folderPath)
 
-'''
-test = cap.get(CV_CAP_PROP_POS_MSEC)
-ratio = cap.get(cv2.cv.CV_CAP_PROP_POS_AVI_RATIO)
-frame_rate = cap.get(cv2.cv.CV_CAP_PROP_FPS)
-width = cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
-height = cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
-brightness = cap.get(cv2.cv.CV_CAP_PROP_BRIGHTNESS)
-contrast = cap.get(cv2.cv.CV_CAP_PROP_CONTRAST)
-saturation = cap.get(cv2.cv.CV_CAP_PROP_SATURATION)
-hue = cap.get(cv2.cv.CV_CAP_PROP_HUE)
-gain = cap.get(cv2.cv.CV_CAP_PROP_GAIN)
-exposure = cap.get(cv2.cv.CV_CAP_PROP_EXPOSURE)
-
-'''
-
 sampleNum = 0
 
 
@@ -69,7 +54,8 @@ while(True):
     for i, d in enumerate(dets):                                                # loop will run for each face detected
         sampleNum += 1
         cv2.imwrite(folderPath + "/User." + Id + "." + str(sampleNum) + ".jpg",
-                    img[d.top():d.bottom(), d.left():d.right()],[int(cv2.IMWRITE_JPEG_QUALITY), 1000000])                                                # Saving the faces
+                    img[d.top():d.bottom(), d.left():d.right()],
+                    [int(cv2.IMWRITE_JPEG_QUALITY), 1000000])                                            # Saving the faces
         size = img.shape
         print(size)
         cv2.rectangle(img, (d.left(), d.top())  ,(d.right(), d.bottom()),(0,255,0) ,2) # Forming the rectangle
