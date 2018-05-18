@@ -19,14 +19,11 @@ wb = load_workbook(filename = "reports.xlsx")
 sheet = wb['Cse15']
 
 def getDateColumn():
-	for i in range(1, len(sheet.rows[0].length) + 1):
+	for i in range(1, len(list(sheet.rows)[0]) + 1):
 		col = get_column_letter(i)
-		#xy = coordinate_from_string('%s%d' %(col, i)
-		print("col = {}".format(col))
-		#	print(xy)
-#		if sheet.cell('%s%s' % (col, i)).value == currentDate:
-#			return col
-			
+		if sheet['%s%s'% (col,'1')].value == currentDate:
+			return col
+
 Key = '63fdb1a3135b4d71bf3b9866173e8ea7'
 
 CF.Key.set(Key)
@@ -47,7 +44,8 @@ for filename in os.listdir(directory):
 		imgurl = imgurl[3:]
 #		print("imgurl = {}".format(imgurl))
 		res = CF.face.detect(imgurl)
-		if len(res) != 1:
+
+		if len(res) < 1:
 			print("No face detected.")
 			continue
 			
@@ -68,12 +66,13 @@ for filename in os.listdir(directory):
 				print("---------- " + row[1] + " recognized ----------")
 		time.sleep(6)
 		
-for row in range(2, len(sheet['A']) + 1):
+for row in range(2, len(list(sheet.columns)[0]) + 1):
 	rn = sheet.cell(row = row, column  =1).value
 	if rn is not None:
 		rn = rn[-2:]
 		if attend[int(rn)] != 0:
 			col = getDateColumn()
+			print("col = {}".format(col))
 			sheet['%s%s' % (col, str(row))] = 1
 
 wb.save(filename = "reports.xlsx")	 	
