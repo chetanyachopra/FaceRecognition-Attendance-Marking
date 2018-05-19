@@ -5,6 +5,8 @@ FaceRecognition Attendance Marking System
 * Opencv2
 * Microsoft Cognitive Services
 * dlib
+* SQLite 
+* openpxyl
 
 Uses Micosoft Cognitive Face API to recognizes faces in picture from cctv or clicked from mobile devices (source can varry) and marks the attendace of each student present in picture
 
